@@ -9,32 +9,26 @@ USE eagle_macro.EAGLE_COMPONENTS.ALL;
 
 entity top is
 	port(
-		NVCAM_CLK: 		in std_logic;
-		NVCAM: 			in std_logic_vector(13 downto 0);
-		NVCAM_SYNC: 	in std_logic;
-		NVCAM_VSYNC: 	in std_logic;
-		NVCAM_LOCK: 	in std_logic;
-		RST_N: 			in std_logic;
+		NVCAM_CLK: 			in std_logic;
+		NVCAM: 				in std_logic_vector(13 downto 0);
+		NVCAM_SYNC: 			in std_logic;
+		NVCAM_VSYNC: 			in std_logic;
+		NVCAM_LOCK: 			in std_logic;
+		RST_N: 				in std_logic;
 		R: 				out std_logic_vector(0 to 7);
 		G: 				out std_logic_vector(0 to 7);
 		B: 				out std_logic_vector(0 to 7);
-		LCD_CLK: 		out std_logic;
-		LCD_HSYNC: 		out std_logic;
-		LCD_VSYNC: 		out std_logic;
-		LCD_DEN: 		out std_logic;
-		LCD_PWM: 		out std_logic	
+		LCD_CLK: 			out std_logic;
+		LCD_HSYNC: 			out std_logic;
+		LCD_VSYNC: 			out std_logic;
+		LCD_DEN: 			out std_logic;
+		LCD_PWM: 			out std_logic	
 	);
 end top;
 
 architecture top_arch of top is
-	-- internal signal declaration 
-	signal clk_lcd: 				std_logic;
-	signal RST: 					std_logic;
-	signal intensity:				std_logic_vector(7 downto 0);
 
  begin
-	RST <= not RST_N;
-
 	decoder_inst : Entity work.decoder
 	port map (
 		NVCAM_CLK => NVCAM_CLK,
@@ -49,5 +43,5 @@ architecture top_arch of top is
 		lcd_de => LCD_DEN
     );
 	
-	B <= NVCAM(7 downto 0);
+	B <= NVCAM(7 downto 0);  -- Send the lowest 8 bits to the Blue channel on the LCD. Insert a colourmap lookup here!
 end top_arch;
